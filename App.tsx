@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
+import { store, useAppDispatch } from './src/store';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './src/navigations/TabNavigator';
-import { store } from './src/store';
 import { loadSettings } from './src/store/settingsSlice';
 
-const Root = () => {
-  const dispatch = useDispatch();
+const MainApp: React.FC = () => {
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(loadSettings());
   }, [dispatch]);
@@ -19,9 +19,10 @@ const Root = () => {
 };
 
 export default function App() {
+  console.log('App component rendered');
   return (
     <Provider store={store}>
-      <Root />
+      <MainApp />
     </Provider>
   );
 }

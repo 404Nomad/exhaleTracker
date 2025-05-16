@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
+import { RootState, useAppDispatch, useAppSelector } from '../store';
 import { saveSettings } from '../store/settingsSlice';
 import { improvements } from '../constants/improvements';
 import { differenceInMilliseconds, formatDuration, intervalToDuration } from 'date-fns';
 
 export default function DashboardScreen() {
-  const { lastSmoke, dailyCigs, cigsPerPack, packPrice, loaded } = useSelector((s: RootState) => s.settings);
-  const dispatch = useDispatch();
+  const { lastSmoke, dailyCigs, cigsPerPack, packPrice, loaded } = useAppSelector(s => s.settings);
+  const dispatch = useAppDispatch();
 
   if (!loaded) return <Text>Chargement…</Text>;
   if (!lastSmoke) return <Text>Veuillez configurer vos paramètres.</Text>;
@@ -33,7 +33,15 @@ export default function DashboardScreen() {
       { text: 'Annuler' },
       {
         text: 'OK',
-        onPress: () => dispatch(saveSettings({ lastSmoke: null, dailyCigs: 0, cigsPerPack: 0, packPrice: 0 }))
+        onPress: () =>
+          dispatch(
+            saveSettings({
+              lastSmoke: null,
+              dailyCigs: 0,
+              cigsPerPack: 0,
+              packPrice: 0
+            })
+          )
       }
     ]);
   };
